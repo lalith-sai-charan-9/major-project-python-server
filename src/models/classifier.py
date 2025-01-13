@@ -3,10 +3,27 @@ import librosa
 import numpy as np
 import tensorflow as tf
 from tensorflow.image import resize
+import requests
+import tempfile
 
 class MusicGenreClassifier:
     def __init__(self, model_path):
-        self.model = tf.keras.models.load_model(model_path)
+        # Google Drive direct download link
+        model_url = "https://drive.google.com/uc?export=download&id=1iBu-jwUSmNSZaWzQcqhOiCXlU6zNLJu4"
+        
+        # Create a temporary directory if it doesn't exist
+        os.makedirs('tmp', exist_ok=True)
+        local_model_path = os.path.join('tmp', 'model.h5')
+        
+        # Download the model if it doesn't exist
+        if not os.path.exists(local_model_path):
+            print("Downloading model...")
+            response = requests.get(model_url)
+            with open(local_model_path, 'wb') as f:
+                f.write(response.content)
+            print("Model downloaded successfully!")
+        
+        self.model = tf.keras.models.load_model(local_model_path)
         self.classes = ['blues', 'classical', 'country', 'disco', 'hiphop', 'jazz', 'metal', 'pop', 'reggae', 'rock']
 
     def load_and_preprocess_data(self, file_path, target_shape=(150, 150)):

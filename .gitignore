@@ -43,3 +43,9 @@ classified/*
 .env
 .env.local
 *.log
+tmp/
+*.h5
+classified/
+__pycache__/
+*.pyc
+.vercel
