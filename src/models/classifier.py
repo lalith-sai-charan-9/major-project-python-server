@@ -1,4 +1,7 @@
 import os
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning)
+
 import librosa
 import numpy as np
 import tensorflow as tf
